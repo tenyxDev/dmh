@@ -1,0 +1,41 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+body {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+}
+
+.ticketWrapper {
+    border: 1px solid #333;
+    width: 600px;
+    height: 100%;
+    padding: 20px;
+    margin:0 auto;
+
+    .ticket {
+        background: #182121;
+        margin: 0;
+        padding: 20px;
+        color: #fafbfc;
+        cursor: pointer;
+    }
+    .ticketName {
+        transition-property: padding-left;
+        transition-duration: .5s;
+        transition-delay: 0s;
+    }
+    .ticket:hover, .ticket.hovered {
+        background: #1b1e21;
+    }
+    .ticket:hover .ticketName {
+        padding-left: 30px;
+    }
+}
