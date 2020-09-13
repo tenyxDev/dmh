@@ -18,6 +18,7 @@ Route::get('/', function () {
 });
 
 Route::resource('/tickets', 'Ticket\TicketController');
+Route::post('/task-complete', 'Ticket\TicketController@complete')->name('task-complete');
 
 Auth::routes();
 

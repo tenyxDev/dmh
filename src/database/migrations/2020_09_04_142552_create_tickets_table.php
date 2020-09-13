@@ -16,6 +16,7 @@ class CreateTicketsTable extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('ticket_type')->index();
+            $table->tinyInteger('status')->default(0); // 0 - new, 1 - active, 2 - pending, 3 - completed, 4 - failed
             $table->string('ticket_name', 128);
             $table->unsignedInteger('timer');
             $table->text('description')->nullable();

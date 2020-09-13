@@ -1,8 +1,5 @@
 <?php
 
-/**
- * Склонение существительных после числительных.
- */
 function num_word($value, $words, $show = true)
 {
     $num = $value % 100;

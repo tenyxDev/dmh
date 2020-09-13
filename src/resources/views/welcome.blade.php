@@ -94,7 +94,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    DMH
+                    <a href="/tickets">DMH</a>
                 </div>
 
                 <div class="links">
