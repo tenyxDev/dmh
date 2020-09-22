@@ -1,5 +1,0 @@
-#!/bin/bash
-
-docker exec -it mysql bash -c "mysql -u homestead -psecret homestead"
-#docker exec -it mysql bash -c "mysql -u root -psecter homestead"
-

@@ -23,13 +23,21 @@ class Ticket extends Model
         'deleted'   => self::STATUS_DELETED,
     ];
 
+    const TYPES_LOCAL = 0;
+    const TYPES_REMOTE = 1;
+
+    const TICKET_TYPES = [
+        'local'  => self::TYPES_LOCAL,
+        'remote' => self::TYPES_REMOTE,
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'ticket_type', 'status', 'ticket_name', 'timer', 'description', 'changed_by',
+        'ticket_type', 'status', 'ticket_name', 'timer', 'description', 'user_id', 'changed_by',
     ];
 
     /**

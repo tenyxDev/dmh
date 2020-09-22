@@ -1,5 +1,8 @@
 <?php
-
+$dir = 'C:\projects\dmh\src\storage\logs';
+if (is_dir($dir)) {
+    dd(phpinfo());
+}
 /**
  * Laravel - A PHP Framework For Web Artisans
  *

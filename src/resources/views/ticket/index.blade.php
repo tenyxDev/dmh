@@ -11,13 +11,43 @@
                         <div class="ticketName">
                             {{ $ticket->ticket_name }}
                         </div>
-                        <div class="ticketTime"
+                        <div class="ticketActions"
                              data-id="{{ $ticket->id }}"
                              data-time-left="{{ $ticket->timer - $currentTime }}">
                             @if(($ticket->timer - $currentTime) < 0)
-                                New
+                                <i class="fas fa-exclamation-triangle"></i>
                             @else
-                                <input type="button" class="btn btn-warning" value="START">
+                                <form method="post" action="{{ route('ticket.activate')}}">
+                                    @csrf
+                                    <input type="hidden" name="ticketId" value="{{ $ticket->id }}">
+                                    {{--                                    <input type="submit" class="btn btn-warning" value="START">--}}
+                                    <button type="submit" class="btn btn-warning">
+                                        <i class="fa fa-play"></i>
+                                        <span class="d-none d-sm-inline">START</span>
+                                    </button>
+                                </form>
+                            @endif
+                            <div class="delimiter"></div>
+                            <a class="btn btn-success"
+                               href="{{ route('tickets.edit', ['ticket' => $ticket->id])}}">
+                                <i class="fas fa-edit"></i>
+                                <span class="d-none d-sm-inline">EDIT</span>
+                            </a>
+                            <div class="delimiter"></div>
+                            <form method="post" action="{{ route('ticket.destroy')}}">
+                                @csrf
+                                <input type="hidden" name="ticketId" value="{{ $ticket->id }}">
+                                {{--                                <input type="submit" class="btn btn-danger" value="DELETE">--}}
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="far fa-trash-alt"></i>
+                                    <span class="d-none d-sm-inline">DELETE</span>
+                                </button>
+                            </form>
+                            <div class="clearfix"></div>
+                            @if(($ticket->timer - $currentTime) < 0)
+                                <span>Finish date can't be in the past</span>
+                            @else
+                                <span>Ticket is ready to start</span>
                             @endif
                         </div>
                     </div>
@@ -30,18 +60,31 @@
                 @foreach($activeTicketList as $ticket)
                     <div class="ticket active">
                         <div class="ticketName">
-                            {{ $ticket->ticket_name }}
+                            <span>{{ $ticket->ticket_name }}</span>
+                            <div class="clearfix"></div>
+                            <div class="ticketTime"
+                                 data-id="{{ $ticket->id }}"
+                                 data-time-left="{{ $ticket->timer - $currentTime }}">
+                                @if(($ticket->timer - $currentTime) < 0)
+                                    Active (timer-error)!
+                                @else
+                                    {{ secToStr($ticket->timer - $currentTime) }}
+                                @endif
+                            </div>
                         </div>
-                        <div class="ticketTime"
-                             data-id="{{ $ticket->id }}"
-                             data-time-left="{{ $ticket->timer - $currentTime }}">
-                            @if(($ticket->timer - $currentTime) < 0)
-                                Active
-                            @else
-                                {{ secToStr($ticket->timer - $currentTime) }} осталось
-                            @endif
+                        <div class="ticketActions">
+                            <form method="post" action="{{ route('ticket.deactivate')}}">
+                                @csrf
+                                <input type="hidden" name="ticketId" value="{{ $ticket->id }}">
+                                {{--                                <input type="submit" class="btn btn-danger" value="STOP">--}}
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-stop hidden-sm-up"></i>
+                                    <span class="d-none d-sm-inline">STOP</span>
+                                </button>
+                            </form>
+                            <div class="clearfix"></div>
+                            <span>{{ \Carbon\Carbon::createFromFormat('U', $ticket->timer)->format('Y-m-d H:i:s') }}</span>
                         </div>
-                        <input type="button" class="btn btn-danger new" value="STOP">
                     </div>
                 @endforeach
             </div>
@@ -71,7 +114,6 @@
                 @endforeach
             </div>
         @endif
-
         @if(count($completedTicketList))
             <div class="task-container completed">
                 <div class="box-label completed">completed</div>
@@ -118,7 +160,7 @@
 
     <div class="hud-interface">
         <div class="create-ticket">
-            <button type="button">
+            <button type="button" id="addTicket" data-route="{{ route('tickets.create') }}">
                 <i class="fal fa-plus-circle"></i>
             </button>
         </div>
@@ -130,9 +172,12 @@
         window.onload = () => {
             $(document)
                 .ready(function () {
-                    var anchor = $('#active').offset().top;
-                    window.scrollTo({top: anchor - 70, behavior: 'smooth'});
-
+                    setTimeout(function () {
+                        let anchor = $('#active').offset();
+                        if (anchor) {
+                            window.scrollTo({top: anchor.top - 70, behavior: 'smooth'});
+                        }
+                    }, 55)
                     let ticketList = $('.ticketWrapper').find('.ticket.active')
                     ticketList.each(function (i, e) {
                         let element = $(e).find('.ticketTime')
@@ -142,6 +187,16 @@
                 .on('click', '.ticket', function () {
                     $(this).closest('.ticketWrapper').find('.ticket').removeClass('hovered')
                     $(this).addClass('hovered')
+                })
+                .on('click', '.navbar-toggler', function () {
+                    if ($(this).hasClass('collapsed')) {
+                        $('.py-1').css('top', 'auto')
+                    } else {
+                        $('.py-1').css('top', '6%')
+                    }
+                })
+                .on('click', '#addTicket', function () {
+                    window.location = $(this).data('route')
                 });
         }
 
@@ -158,6 +213,7 @@
 
         function timerComplete(interval, element) {
             clearInterval(interval);
+            console.log(element);
             element.text('Completed')
             // callTack(element.data('id'))
         }
@@ -190,7 +246,7 @@
                 num = num % 10;
             }
 
-            out = (show) ? value + ' ' : '';
+            out = (show) ? value + '' : '';
             switch (num) {
                 case 1:
                     out = out + words[0];
@@ -208,26 +264,39 @@
             return out;
         }
 
-        function secToStr(secs) {
+        function secToStr(secs, lang = 'en') {
             let res = '';
             let hours;
             let minutes;
+            let dayNames = ['d', 'd', 'd'];
+            let hourNames = ['h', 'h', 'h'];
+            let minNames = ['m', 'm', 'm'];
+            let sekNames = ['s', 's', 's'];
+            let postFix = ' left';
+
+            if(lang === 'ru') {
+                dayNames = ['день', 'дня', 'дней'];
+                hourNames = ['час', 'часа', 'часов'];
+                minNames = ['минута', 'минуты', 'минут'];
+                sekNames = ['секунда', 'секунды', 'секунд'];
+                postFix = ' осталось';
+            }
 
             let days = Math.floor(secs / 86400);
             secs = secs % 86400;
-            res = res + num_word(days, ['день', 'дня', 'дней']) + ', ';
+            res = res + num_word(days, dayNames) + ', ';
 
             hours = Math.floor(secs / 3600);
             secs = secs % 3600;
-            res = res + num_word(hours, ['час', 'часа', 'часов']) + ', ';
+            res = res + num_word(hours, hourNames) + ', ';
 
             minutes = Math.floor(secs / 60);
             secs = secs % 60;
-            res = res + num_word(minutes, ['минута', 'минуты', 'минут']) + ', ';
+            res = res + num_word(minutes, minNames) + ', ';
 
-            res = res + num_word(secs, ['секунда', 'секунды', 'секунд']);
+            res = res + num_word(secs, sekNames);
 
-            return res + ' осталось';
+            return res + postFix;
         }
 
 

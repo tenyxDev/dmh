@@ -1,7 +1,7 @@
 version: '3.8'
 
 networks:
-    laravel:
+  laravel:
 
 services:
   nginx:
@@ -11,7 +11,7 @@ services:
       - "8088:80"
     volumes:
       - ./src:/var/www/html
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
       - mysql
@@ -24,9 +24,9 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./docker/mysql:/var/lib/mysql
     environment:
       MYSQL_DATABASE: homestead
       DB_HOST: host.docker.internal
@@ -42,6 +42,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        UID: ${UID}
     container_name: php
     volumes:
       - ./src:/var/www/html
@@ -49,3 +51,30 @@ services:
       - "9000:9000"
     networks:
       - laravel
+
+  # Cache
+  cache:
+    container_name: dmh_cache
+    build:
+      context: ./docker/redis
+    image: dmh/redis
+    privileged: true
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - cache-data:/data
+
+  # Adminer
+  adminer:
+    container_name: dmh_adminer
+    image: adminer:4.7
+    restart: always
+    ports:
+      - 8089:8080
+    links:
+      - mysql
+
+volumes:
+  mysql: {  }
+  cache-data: {  }

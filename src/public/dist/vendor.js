@@ -12497,4 +12497,4 @@ module.exports = __webpack_require__(/*! vue */"./node_modules/vue/dist/vue.comm
 
 /***/ })
 
-}]);
+},[[1,"/dist/manifest"]]]);
