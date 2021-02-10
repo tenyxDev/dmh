@@ -16,12 +16,16 @@
 {{--                <li class="nav-item">--}}
 {{--                    <a class="nav-link" href="{{ route('tardis') }}">{{ __('TARDIS') }}</a>--}}
 {{--                </li>|--}}
+                @if (Auth::check())
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('tickets.index') }}">{{ __('TICKET LIST') }}</a>
-                </li>|
+                </li>
+                @endif
+                @if (Auth::check())
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('tickets.create') }}">{{ __('CREATE TICKET') }}</a>
                 </li>
+                @endif
                 {{--                <li class="nav-item">--}}
                 {{--                    <a class="nav-link" href="{{ route('ticket.docs') }}">{{ __('TICKET DOCS') }}</a>--}}
                 {{--                </li>--}}

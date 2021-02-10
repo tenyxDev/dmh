@@ -9,11 +9,11 @@
     <title>{{ config('app.name', 'DMH') }}</title>
 
     <!-- Fonts -->
-{{--    <link rel="dns-prefetch" href="//fonts.gstatic.com">--}}
-{{--    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">--}}
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-<!-- Styles -->
-    <link href="{{ asset('dist/app.css') }}" rel="stylesheet">
+    <!-- Styles -->
+    <link href="{{ asset('dist/css/app.css') }}" rel="stylesheet">
 
 </head>
 <body>
@@ -28,12 +28,10 @@
 </div>
 
 <!-- Scripts -->
-<script src="{{ asset('dist/manifest.js') }}" defer></script>
-<script src="{{ asset('dist/vendor.js') }}" defer></script>
-<script src="{{ asset('dist/app.js') }}" defer></script>
+{{--<script src="{{ asset('dist/manifest.js') }}" defer></script>--}}
+{{--<script src="{{ asset('dist/vendor.js') }}" defer></script>--}}
+<script src="{{ asset('dist/js/app.js') }}" defer></script>
 
 @yield('script')
-<!-- fontawesome -->
-<script src="https://kit.fontawesome.com/26bc02400f.js" crossorigin="anonymous"></script>
 </body>
 </html>

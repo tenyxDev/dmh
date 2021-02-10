@@ -1,4 +1,4 @@
-FROM php:7.2-fpm
+FROM php:7.3-fpm
 
 RUN docker-php-ext-install pdo pdo_mysql
 
@@ -17,14 +17,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openssl
 
 # Main User
-ARG UID
-RUN mkdir /home/www-data \
-    && usermod -u ${UID} -d /home/www-data www-data \
-    && groupmod -g ${UID} www-data \
-    && echo 'alias ll="ls -la"' >> /home/www-data/.bashrc \
-    && echo 'alias ..="cd .."' >> /home/www-data/.bashrc \
-    && echo 'alias artisan="php artisan"' >> /home/www-data/.bashrc \
-    && chown www-data:www-data /home/www-data -R
+RUN chown -R www-data:www-data /var/www/html
+#RUN chmod -R 777 /var/www/html/bootstrap/cache
+#RUN chmod -R 777 /var/www/html/storage
 
 #####################################
 # XML
@@ -47,18 +42,23 @@ RUN docker-php-ext-install \
 #####################################
 # Compression
 #####################################
-RUN apt-get update \
-	&& apt-get install -y \
-	    libbz2-dev \
-	    zlib1g-dev \
-	&& docker-php-ext-install \
-		zip \
-		bz2
+#install some base extensions
+RUN apt-get install -y zip libzip-dev \
+  && docker-php-ext-configure zip --with-libzip \
+  && docker-php-ext-install zip
+
+#RUN apt-get update \
+#	&& apt-get install -y \
+#	    zlib1g-dev \
+#	&& docker-php-ext-install \
+#		zip \
+#		bz2
 
 #####################################
 # Other
 #####################################
 RUN docker-php-ext-install \
+	    pcntl \
 	    sockets \
 	    calendar \
 	    sysvmsg \
@@ -75,9 +75,6 @@ RUN apt-get update \
         libpng-dev \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd
-
-# XDebug
-RUN pecl install xdebug
 
 # CodeSniffer
 RUN curl -o /usr/bin/phpcs https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \

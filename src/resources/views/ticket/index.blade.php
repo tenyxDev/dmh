@@ -3,7 +3,7 @@
 @section('content')
     {{--    <div id="space-invader"></div>--}}
     <div class="taskList">
-        @if(count($newTicketList))
+        @if(!empty($newTicketList) && count($newTicketList))
             <div class="task-container new">
                 <div class="box-label new">draft</div>
                 @foreach($newTicketList as $ticket)
@@ -54,7 +54,7 @@
                 @endforeach
             </div>
         @endif
-        @if(count($activeTicketList))
+        @if(!empty($activeTicketList) && count($activeTicketList))
             <div class="task-container active {{ count($activeTicketList) ?: 'hide' }}">
                 <div class="box-label active"><a id="active">activated</a></div>
                 @foreach($activeTicketList as $ticket)
@@ -89,7 +89,7 @@
                 @endforeach
             </div>
         @endif
-        @if(count($pendingTicketList))
+        @if(!empty($pendingTicketList) && count($pendingTicketList))
             <div class="task-container pending">
                 <div class="box-label pending">
                     <div class="meter animate">
@@ -114,7 +114,7 @@
                 @endforeach
             </div>
         @endif
-        @if(count($completedTicketList))
+        @if(!empty($completedTicketList) && count($completedTicketList))
             <div class="task-container completed">
                 <div class="box-label completed">completed</div>
                 @foreach($completedTicketList as $ticket)
@@ -130,7 +130,7 @@
                 @endforeach
             </div>
         @endif
-        @if(count($failedTicketList))
+        @if(!empty($failedTicketList) && count($failedTicketList))
             <div class="task-container failed">
                 <div class="box-label failed">failed</div>
                 @foreach($failedTicketList as $ticket)
@@ -147,11 +147,11 @@
             </div>
         @endif
 
-        @if(!count($newTicketList)
-         && !count($activeTicketList)
-         && !count($pendingTicketList)
-         && !count($completedTicketList)
-         && !count($failedTicketList)
+        @if(empty($newTicketList)
+         && empty($activeTicketList)
+         && empty($pendingTicketList)
+         && empty($completedTicketList)
+         && empty($failedTicketList)
         )
             <h1>WELCOME TO DEAD MEN'S HAND</h1>
         @endif

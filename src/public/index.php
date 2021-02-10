@@ -1,8 +1,5 @@
 <?php
-$dir = 'C:\projects\dmh\src\storage\logs';
-if (is_dir($dir)) {
-    dd(phpinfo());
-}
+
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
@@ -57,6 +54,7 @@ $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 $response = $kernel->handle(
     $request = Illuminate\Http\Request::capture()
 );
+//die(microtime(true) - LARAVEL_START);
 
 $response->send();
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html amp lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -82,15 +82,24 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <div class="title m-b-md">
-                    <a href="/tickets">Welcome to DMH project</a>
+                    @if (Auth::check())
+                        <a href="{{ route('tickets.index') }}">Welcome to DMH project</a>
+                    @endif
                 </div>
 
                 <div class="links">
-                    <a href="/tickets">Tickets</a>
-                    <a href="/info">Info</a>
+                    @if (Auth::check())
+                        <a href="{{ route('tickets.index') }}">Tickets</a>
+                    @endif
+                    @if (Auth::check())
+                        <a href="{{ route('ticket.info') }}">Info</a>
+                    @endif
                     <a href="https://github.com/tenyxDev/dmh">GitHub</a>
                 </div>
             </div>
         </div>
+
+        <!-- fontawesome -->
+        <script src="https://kit.fontawesome.com/26bc02400f.js" crossorigin="anonymous"></script>
     </body>
 </html>

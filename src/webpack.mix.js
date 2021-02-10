@@ -1,4 +1,4 @@
-const mix = require('laravel-mix');
+let mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,12 +11,11 @@ const mix = require('laravel-mix');
  |
  */
 
-console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-
-mix.js('resources/js/app.js', 'dist').extract(['vue'])
-    .sass('resources/sass/app.scss', 'dist');
+mix.js('resources/js/app.js', 'public/dist/js')
+    .sass('resources/sass/app.scss', 'public/dist/css')
+    .setPublicPath('public');
 
 // mix.js('resources/js/app.js', 'public/js').extract(['vue'])
 //     .sass('resources/sass/app.scss', 'public/css');
 
-console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+console.log('laravel-mix done');

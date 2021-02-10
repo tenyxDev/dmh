@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\Authenticate;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,13 +27,19 @@ Route::get('/cssAnimateBorder', function () {
     return view('cssAnimateBorder');
 })->name('cssAnimateBorder');
 
-Route::get('/info', 'Ticket\TicketController@info')->name('ticket.info');
-Route::post('/ticket-complete', 'Ticket\TicketController@complete')->name('ticket.complete');
-Route::post('/ticket-activate', 'Ticket\TicketController@activate')->name('ticket.activate');
-Route::post('/ticket-deactivate', 'Ticket\TicketController@deactivate')->name('ticket.deactivate');
-Route::post('/ticket-destroy', 'Ticket\TicketController@destroy')->name('ticket.destroy');
-Route::resource('/tickets', 'Ticket\TicketController');
+Route::middleware([Authenticate::class])->group(function () {
+    Route::get('/info', 'Ticket\TicketController@info')->name('ticket.info');
+    Route::post('/ticket-complete', 'Ticket\TicketController@complete')->name('ticket.complete');
+    Route::post('/ticket-activate', 'Ticket\TicketController@activate')->name('ticket.activate');
+    Route::post('/ticket-deactivate', 'Ticket\TicketController@deactivate')->name('ticket.deactivate');
+    Route::post('/ticket-destroy', 'Ticket\TicketController@destroy')->name('ticket.destroy');
+    Route::resource('/tickets', 'Ticket\TicketController')->middleware('auth');
+});
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+//Route::get('/dispatch-ticket', function () {
+//    App\Jobs\ExecuteTicket::dispatch('Test ticket');
+//})->name('dispatch-ticket');

@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class TicketController extends Controller
@@ -18,25 +18,37 @@ class TicketController extends Controller
 
     public function index()
     {
+        Log::info('TicketController');
+
+        $userId = auth::user()->id ?? die('no auth::user()->id');
+        if(!$userId) {
+            die('invalid $userId');
+        }
+
         $newTicketList = Ticket::where([
-            'status' => Ticket::STATUSES['new']
+            'user_id' => $userId,
+            'status'  => Ticket::STATUSES['new']
         ])->orderBy('timer')->get();
 
         $activeTicketList = Ticket::where([
-            'status' => Ticket::STATUSES['active']
+            'user_id' => $userId,
+            'status'  => Ticket::STATUSES['active']
         ])->where('timer', '>', Carbon::now()->format('U'))
             ->orderBy('timer')->get();
 
         $pendingTicketList = Ticket::where([
-            'status' => Ticket::STATUSES['pending']
+            'user_id' => $userId,
+            'status'  => Ticket::STATUSES['pending']
         ])->orderBy('timer')->get();
 
         $completedTicketList = Ticket::where([
-            'status' => Ticket::STATUSES['completed']
+            'user_id' => $userId,
+            'status'  => Ticket::STATUSES['completed']
         ])->orderBy('timer')->get();
 
         $failedTicketList = Ticket::where([
-            'status' => Ticket::STATUSES['failed']
+            'user_id' => $userId,
+            'status'  => Ticket::STATUSES['failed']
         ])->orWhere('timer', '<', Carbon::now()->format('U'))
             ->orderBy('timer')->get();
 
@@ -104,27 +116,27 @@ class TicketController extends Controller
     {
 
 //        dump(Config::all());
-        $dir = 'C:\projects\dmh\src\storage\logs';
-        if (is_dir($dir)) {
-            dd(phpinfo());
-        }
+//        $dir = 'C:\projects\dmh\src\storage\logs';
+//        if (is_dir($dir)) {
+//            dd(phpinfo());
+//        }
     }
 
     /**
      * @param TicketRequest $request
      * @return RedirectResponse
      */
-    public function store(TicketRequest $request)
+    public function store(TicketRequest $request): RedirectResponse
     {
-        Log::info('store call');
+        $userId = auth::user()->id ?? die('no auth::user()->id');
+        Log::info('store call by user ' . var_export($userId, true));
         $ticketData = $request->except(['_method', '_token']);
 
         $ticketData['status'] = Ticket::STATUS_NEW;
-        $ticketData['user_id'] = User::DEFAULT_USER;
-        $ticketData['changed_by'] = User::DEFAULT_USER;
-
-
+        $ticketData['user_id'] = $userId;
+        $ticketData['changed_by'] = $userId;
         $ticketData['timer'] = implode(' ', $request->get('timer'));
+
         try {
             $carbonTimer = Carbon::createFromFormat('Y-m-d H:i:s', implode(' ', $request->get('timer')));
         } catch (\Exception $e) {

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use DebugBar\DebugBar;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
