@@ -1,0 +1,22 @@
+#!/bin/bash
+
+docker exec -it app bash -c "sudo -u devuser /bin/bash"
+
+#docker run -it php cmd
+#php artisan cache:clear && php artisan config:cache
+##START
+#docker-compose build && docker-compose up -d
+#
+##ARTISAN
+#docker exec php php /var/www/html/artisan migrate
+#
+##MIGRATE
+#docker exec php php /var/www/html/artisan make:migration create_ticket_points_table
+#
+#docker exec php php /var/www/html/artisan migrate:refresh
+#
+#docker exec php php /var/www/html/artisan ui vue --auth
+
+docker exec -it app bash
+php artisan cache:clear && php artisan config:cache
+php artisan route:cache

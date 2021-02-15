@@ -1,0 +1,496 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url("https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+/* Cool infinite background scrolling animation.
+ * Twitter: @kootoopas
+ */
+
+/* Background data (Original source: https://subtlepatterns.com/grid-me/) */
+$bg-url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAABVQTFRFSv+O+P/61//m////UP+SAAAA3v7qKOH3gAAAAAd0Uk5T//9w//8AMJwA6dsAAAAmSURBVHicY2BUwg4UGUxCsYMQhlQcMqGjMqMyozKjMkNCBmf5BgAhDpypb0f13QAAAABJRU5ErkJggg==";
+$bg-width: 50px;
+$bg-height: 50px;
+
+/* Animations */
+@-webkit-keyframes bg-scrolling-reverse {
+    100% { background-position: $bg-width $bg-height; }
+}
+@-moz-keyframes    bg-scrolling-reverse {
+    100% { background-position: $bg-width $bg-height; }
+}
+@-o-keyframes      bg-scrolling-reverse {
+    100% { background-position: $bg-width $bg-height; }
+}
+@keyframes         bg-scrolling-reverse {
+    100% { background-position: $bg-width $bg-height; }
+}
+
+@-webkit-keyframes bg-scrolling {
+    0% { background-position: $bg-width $bg-height; }
+}
+@-moz-keyframes    bg-scrolling {
+    0% { background-position: $bg-width $bg-height; }
+}
+@-o-keyframes      bg-scrolling {
+    0% { background-position: $bg-width $bg-height; }
+}
+@keyframes         bg-scrolling {
+    0% { background-position: $bg-width $bg-height; }
+}
+
+// background
+.background-panel {
+    opacity: .3;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: -999;
+
+    background: url($bg-url) repeat 0 0;
+
+    -webkit-animation: bg-scrolling 15s infinite; /* Safari 4+ */
+    -moz-animation:    bg-scrolling 15s infinite; /* Fx 5+ */
+    -o-animation:      bg-scrolling 15s infinite; /* Opera 12+ */
+    animation:         bg-scrolling 15s infinite; /* IE 10+ */
+    -webkit-animation-timing-function: linear;
+    -moz-animation-timing-function:    linear;
+    -o-animation-timing-function:      linear;
+}
+
+.navbar-collapse {
+    padding-top: 10px !important;
+    padding-bottom: 10px;
+}
+
+@media screen and (min-width: 768px) {
+    .create-ticket {
+        display: none;
+    }
+}
+
+// PENDING ANIMATE
+.meter {
+    height: 20px;  /* Can be anything */
+    position: relative;
+    background: #555;
+    -webkit-box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
+    -moz-box-shadow   : inset 0 -1px 1px rgba(255,255,255,0.3);
+    box-shadow        : inset 0 -1px 1px rgba(255,255,255,0.3);
+}
+.meter > span {
+    display: block;
+    height: 100%;
+    background-color: rgb(43,194,83);
+    background-image: -moz-linear-gradient(
+            center bottom,
+            #00a7a7 37%,
+            #00e2e2 69%
+    );
+    background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0, #00a7a7),
+            color-stop(1, #00e2e2)
+    );
+    -webkit-box-shadow:
+        inset 0 2px 9px  rgba(255,255,255,0.3),
+        inset 0 -2px 6px rgba(0,0,0,0.4);
+    -moz-box-shadow:
+        inset 0 2px 9px  rgba(255,255,255,0.3),
+        inset 0 -2px 6px rgba(0,0,0,0.4);
+    box-shadow:
+        inset 0 2px 9px  rgba(255,255,255,0.3),
+        inset 0 -2px 6px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+}
+.meter > span:after, .animate > span > span {
+    width: 100%;
+    content: "";
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background-image:
+        -moz-linear-gradient(
+                -45deg,
+                rgba(255, 255, 255, .2) 25%,
+                transparent 25%,
+                transparent 50%,i
+                rgba(255, 255, 255, .2) 50%,
+                rgba(255, 255, 255, .2) 75%,
+                transparent 75%,
+                transparent
+        );
+    background-image:
+        -webkit-gradient(linear, 0 0, 100% 100%,
+            color-stop(.25, rgba(255, 255, 255, .2)),
+            color-stop(.25, transparent), color-stop(.5, transparent),
+            color-stop(.5, rgba(255, 255, 255, .2)),
+            color-stop(.75, rgba(255, 255, 255, .2)),
+            color-stop(.75, transparent), to(transparent)
+        );
+    z-index: 1;
+    -webkit-background-size: 50px 50px;
+    -moz-background-size: 50px 50px;
+    -webkit-animation: move 2s linear infinite;
+    overflow: hidden;
+}
+.animate > span:after {
+    display: none;
+}
+// PENDING ANIMATE
+
+@-webkit-keyframes move {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 50px 50px;
+    }
+}
+
+.error-list{
+    font-weight: bold;
+    position: fixed;
+    background: #ffdfdb;
+    color: $red-message-dark;
+    border-radius: 4px;
+    top: 80px;
+    padding: 5px 20px 5px 0;
+    width: 100%;
+}
+
+a:active {color: $base-color-light}
+
+.navbar a:active {color: $base-color-light !important}
+
+i {
+    font-family: fontawesome !important;
+    font-style: normal;
+}
+
+html, body {
+    background-color: #222;
+    //display: flex;
+    //justify-content: center;
+    //align-items: center;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+    position: relative;
+    margin: 0 auto;
+    z-index: 100;
+}
+
+input, button {
+    outline: none !important;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: $base-color-dark;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $base-color-light;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: $base-color-light;
+}
+
+.bg-white {
+    background-color: $base-color-dark !important;
+    border-bottom: 2px solid #0a0e0e;
+    position: sticky;
+    padding: 0;
+    top: 0;
+    z-index: 999;
+}
+
+nav, .hud-interface {
+    i {
+        color: $base-color;
+        font-size: 35px;
+    }
+}
+
+.navbar-light .navbar-brand, .navbar-light .navbar-nav .nav-link {
+    color: #4dc0b5;
+}
+
+.navbar-light .navbar-brand:hover, .navbar-light .navbar-nav .nav-link:hover {
+    color: $base-color-light;
+}
+
+.navbar-light .navbar-brand, .navbar-light .navbar-nav .nav-link {
+    font-weight: bold;
+}
+
+//.navbar-light .navbar-toggler-icon {
+//    background-image: url('./storage/hamburger.png'); <i class="fas fa-bars"></i>
+//}
+
+.navbar-collapse {
+    text-align: right;
+    padding-top: 15px;
+}
+.navbar-toggler-icon {
+    width: 62px;
+    height: 62px;
+}
+.navbar-toggler {
+    padding-right: 0;
+}
+
+.ticketWrapper {
+    height: 100%;
+
+    .clearfix.hr {
+        margin: 5px;
+        border-bottom: 1px solid #2d995b;
+    }
+
+    .ticketActions{
+        line-height: 2;
+        margin-top: -10px;
+        text-align: right;
+        min-width: 160px;
+
+        form {
+            display: inline-block;
+        }
+    }
+
+    .ticketTime form{
+        display: inline-block;
+    }
+
+    .py-1 {
+        height: 100%;
+        position: absolute;
+        width: 100%;
+        padding: 0;
+    }
+
+    .hud-interface {
+        z-index: 200;
+        position: relative;
+    }
+
+    .taskList {
+        overflow-y: auto;
+
+        .delimiter {
+            width: 10px;
+            display: inline-block;
+        }
+
+        .btn-dark.new {
+            background: #cacaca;
+            color: #0a0e0e;
+        }
+
+        .btn-danger.failed {
+            background: #a90a5b;
+        }
+
+        .btn-primary.pending {
+            background: #00C3C3;
+        }
+
+        .task-container {
+            position: relative;
+
+            .box-label {
+                transition-property: width;
+                transition-duration: .5s;
+                transition-delay: 0s;
+                height: 11px;
+                width: 80px;
+                line-height: 10px;
+                border-radius: 0 115px 0 0;
+                overflow: hidden;
+            }
+
+            .box-label.new {
+                background: linear-gradient(-45deg, rgba(0, 0, 0, 0) 50%, #393400 0%, #393400 60%, rgba(0, 0, 0, 0) 60%);
+                background-size: 5em 5em;
+                background-color: #ffe500;
+                color: #333;
+            }
+
+            .box-label.active {
+                background:
+                    repeating-radial-gradient(
+                            circle at 0 0,
+                            #73cfc6,
+                            #c1fff9 50px
+                    );
+                color: $light-blue-theme-selected-area-light;
+            }
+
+            .box-label.pending {
+                //background: #00C3C3;
+                color: #444;
+            }
+
+            .box-label.completed {
+                background: #00ff7e;
+                color: #444;
+            }
+
+            .box-label.failed {
+                background: #a90a5b;
+                color: #eaeaea;
+            }
+        }
+
+        .task-container:hover .box-label {
+            width: 100%;
+        }
+    }
+
+    .create-ticket {
+        position: fixed;
+        bottom: 15px;
+        right: 20px;
+
+        button {
+            border: none;
+            border-radius: 30px;
+
+            i {
+                line-height: 1.2;
+                font-size: 55px;
+            }
+        }
+
+        button:hover {
+            background: rgba(77, 192, 181, 0.6);
+        }
+    }
+
+    .ticket {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        margin: 0;
+        padding: 20px;
+        cursor: pointer;
+        border-bottom: 1px solid #305641;
+        height: 82px;
+    }
+
+    .ticket.new {
+        background: $new-background;
+        color: #ffed4a;
+
+        button {
+            height: 37px;
+        }
+
+        i.fa-exclamation-triangle {
+            font-size: 37px;
+            vertical-align: middle;
+        }
+    }
+
+    .ticket.active {
+        background: $active-background;
+        color: #c1fff9;
+    }
+
+    .ticket.pending {
+        background: $pending-background;
+        color: #00C3C3;
+    }
+
+    .ticket.completed {
+        background: $completed-background;
+        color: #00ff7e;
+    }
+
+    .ticket.failed {
+        background: $failed-background;
+        color: #a90a5b;
+    }
+
+    .ticket:hover, .ticket.hovered {
+        background: #1b1e21;
+    }
+
+    //.ticket:hover .ticketName {
+    //    padding-left: 30px;
+    //}
+
+    .ticketName {
+        transition-property: padding-left;
+        transition-duration: .5s;
+        transition-delay: 0s;
+    }
+}
+
+.taskForm {
+    text-align: center;
+    //width: 100%;
+    //position: absolute;
+    //top: 20%;
+
+    .pageLegend {
+        color: #f1f2f3;
+        font-size: 2em;
+    }
+
+    .inputLabel {
+        position: relative;
+        width: 90%;
+        border: 1px solid #2d995b;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 15px auto;
+
+        label {
+            position: absolute;
+            color: #2d995b;
+            background: #222222;
+            top: -10px;
+            left: 10px;
+            font-size: 12px;
+            padding: 0 15px;
+            border-radius: 4px;
+        }
+    }
+
+    .inputLabel.transparent {
+        width: 90%;
+        border: transparent;
+        padding: 10px;
+        margin: 5px auto;
+    }
+
+    input, button, select, textarea {
+        width: 100%;
+        height: 37px !important;
+        vertical-align: center;
+        border-radius: 4px;
+        border: none;
+        margin: 4px 0;
+    }
+    input, select, textarea {
+        background: #c3dbdb;
+    }
+}
+
+.card {
+    top: 10vw;
+}
