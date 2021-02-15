@@ -73,10 +73,16 @@
                             </div>
                         </div>
                         <div class="ticketActions">
+                            <form method="post" action="{{ route('dispatch.ticket')}}">
+                                @csrf
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-stop hidden-sm-up"></i>
+                                    <span class="d-none d-sm-inline">DISPATCH</span>
+                                </button>
+                            </form>
                             <form method="post" action="{{ route('ticket.deactivate')}}">
                                 @csrf
                                 <input type="hidden" name="ticketId" value="{{ $ticket->id }}">
-                                {{--                                <input type="submit" class="btn btn-danger" value="STOP">--}}
                                 <button type="submit" class="btn btn-danger">
                                     <i class="fas fa-stop hidden-sm-up"></i>
                                     <span class="d-none d-sm-inline">STOP</span>

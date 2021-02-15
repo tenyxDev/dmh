@@ -39,7 +39,3 @@ Route::middleware([Authenticate::class])->group(function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-//Route::get('/dispatch-ticket', function () {
-//    App\Jobs\ExecuteTicket::dispatch('Test ticket');
-//})->name('dispatch-ticket');

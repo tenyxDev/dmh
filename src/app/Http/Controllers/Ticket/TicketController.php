@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Ticket;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ticket\TicketRequest;
+use App\Jobs\ExecuteTicket;
 use App\Jobs\SendReminderEmail;
 use App\Models\Ticket;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -18,8 +18,6 @@ class TicketController extends Controller
 
     public function index()
     {
-        Log::info('TicketController');
-
         $userId = auth::user()->id ?? die('no auth::user()->id');
         if(!$userId) {
             die('invalid $userId');
@@ -49,8 +47,7 @@ class TicketController extends Controller
         $failedTicketList = Ticket::where([
             'user_id' => $userId,
             'status'  => Ticket::STATUSES['failed']
-        ])->orWhere('timer', '<', Carbon::now()->format('U'))
-            ->orderBy('timer')->get();
+        ])->orderBy('timer')->get();
 
         return view('ticket.index', [
             'newTicketList'       => $newTicketList,
@@ -71,7 +68,7 @@ class TicketController extends Controller
         ]);
 
         // Create job
-        dispatch((new SendReminderEmail($ticket))
+        dispatch((new ExecuteTicket($request->get('ticketId')))
             ->delay(Carbon::createFromFormat('U', $ticket->timer))
         );
 

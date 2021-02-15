@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 
+echo "start shell"
+
 set -e
 
-role=${CONTAINER_ROLE:-app}
+role=${CONTAINER_ROLE:-queue}
 env=${APP_ENV:-production}
+
+echo "$role"
+echo "$env"
 
 if [ "$env" != "local" ]; then
     echo "Caching configuration..."

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Ticket;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -12,16 +13,16 @@ class ExecuteTicket implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $ticketName;
+    protected $ticketId;
 
     /**
      * Create a new job instance.
      *
-     * @param $ticketName
+     * @param $ticketId
      */
-    public function __construct($ticketName)
+    public function __construct($ticketId)
     {
-        $this->ticketName = $ticketName;
+        $this->ticketId = (int)$ticketId;
     }
 
     /**
@@ -31,6 +32,40 @@ class ExecuteTicket implements ShouldQueue
      */
     public function handle()
     {
-        info('ExecuteTicket ' . $this->ticketName);
+        info('ExecuteTicket start with ticketId: ' . $this->ticketId);
+
+        $ticket = Ticket::whereId($this->ticketId)->first();
+        $ticket->update([
+            'status' => Ticket::STATUS_PENDING
+        ]);
+
+        if ($this->processTicketPoints()) {
+            $ticket->update([
+                'status' => Ticket::STATUS_COMPLETED
+            ]);
+            info('ExecuteTicket result: ' . var_export([
+                    'ticketId' => $this->ticketId,
+                    'status'   => Ticket::STATUS_COMPLETED
+                ], true));
+        } else {
+            $ticket->update([
+                'status' => Ticket::STATUS_FAILED
+            ]);
+
+            info('ExecuteTicket result: ' . var_export([
+                    'ticketId' => $this->ticketId,
+                    'status'   => Ticket::STATUS_FAILED
+                ], true));
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    protected function processTicketPoints(): bool
+    {
+        info('processTicketPoints false');
+
+        return false;
     }
 }
