@@ -1,6 +1,8 @@
 @csrf
 <div class="inputLabel">
-    <label title="If you trust our services you could place your tickets on remote servers. Otherwise ticket will be created only on your current device">Ticket place</label>
+    <label
+        title="If you trust our services you could place your tickets on remote servers. Otherwise ticket will be created only on your current device">Ticket
+        place</label>
     @php
         $selectedLocal = $selectedRemote = $ticketName = $ticketTimer = $ticketDescription = '';
         if (isset($ticket)) {
@@ -21,17 +23,16 @@
 </div>
 <div class="inputLabel">
     <label>Ticket name</label>
-    <input name="ticket_name" value="{{ $ticketName }}">
+    <input name="ticket_name" autocomplete="off" value="{{ $ticketName }}">
 </div>
 <div class="inputLabel">
-    <label>Ticket timer</label>
-    <input type="date" name="timer[date]" class="datepicker" value="{{ $ticketTimer ? Carbon\Carbon::createFromFormat('U', $ticketTimer)->format('Y-m-d') : '' }}">
-    <div class="clearfix hr"></div>
-    <input type="time" name="timer[time]" class="datepicker" value="{{ $ticketTimer ? Carbon\Carbon::createFromFormat('U', $ticketTimer)->format('H:i:s') : '' }}">
+    <label>Execution time</label>
+    <input name="timer" class="datetimepicker" autocomplete="off"
+           value="{{ $ticketTimer ? Carbon\Carbon::createFromFormat('U', $ticketTimer)->format('Y/m/d H:i:s') : '' }}">
 </div>
 <div class="inputLabel">
     <label>Ticket description</label>
-    <textarea rows="2" name="description">{{ $ticketDescription }}</textarea>
+    <textarea rows="4" name="description">{{ $ticketDescription }}</textarea>
 </div>
 
 <div class="inputLabel transparent">

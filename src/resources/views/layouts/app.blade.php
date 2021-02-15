@@ -14,7 +14,6 @@
 
     <!-- Styles -->
     <link href="{{ asset('dist/css/app.css') }}" rel="stylesheet">
-
 </head>
 <body>
 <div class="ticketWrapper" data-route="{{ route('ticket.complete') }}">
@@ -28,8 +27,6 @@
 </div>
 
 <!-- Scripts -->
-{{--<script src="{{ asset('dist/manifest.js') }}" defer></script>--}}
-{{--<script src="{{ asset('dist/vendor.js') }}" defer></script>--}}
 <script src="{{ asset('dist/js/app.js') }}" defer></script>
 
 @yield('script')

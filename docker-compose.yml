@@ -6,7 +6,7 @@ networks:
 services:
   app:
     image: app
-    container_name: app
+    container_name: dmh_app
     env_file: ./src/.env
     build:
       context: .
@@ -20,7 +20,7 @@ services:
 
   nginx:
     image: nginx:stable-alpine
-    container_name: nginx
+    container_name: dmh_nginx
     ports:
       - "8088:80"
     volumes:
@@ -34,7 +34,7 @@ services:
 
   mysql:
     image: mysql:5.7.22
-    container_name: mysql
+    container_name: dmh_mysql
     restart: unless-stopped
     tty: true
     ports:
@@ -52,36 +52,36 @@ services:
     networks:
       - app_network
 
-  # Cache
-  cache:
-    container_name: dmh_cache
-    build:
-      context: ./docker/redis
-    image: redis:4-alpine
-    privileged: true
-    restart: always
-    ports:
-      - 6379:6379
-    volumes:
-      - cache-data:/data
-    networks:
-      - app_network
+#  # Cache
+#  cache:
+#    container_name: dmh_cache
+#    build:
+#      context: ./docker/redis
+#    image: redis:4-alpine
+#    privileged: true
+#    restart: always
+#    ports:
+#      - 6379:6379
+#    volumes:
+#      - cache-data:/data
+#    networks:
+#      - app_network
 
-  scheduler:
-    image: app
-    container_name: dmh-scheduler
-    depends_on:
-      - app
-    volumes:
-      - .:/var/www/html
-    environment:
-      APP_ENV: local
-      CONTAINER_ROLE: scheduler
-      CACHE_DRIVER: redis
-      QUEUE_DRIVER: redis
-      REDIS_HOST: host.docker.internal
-    networks:
-      - app_network
+#  scheduler:
+#    image: app
+#    container_name: dmh_scheduler
+#    depends_on:
+#      - app
+#    volumes:
+#      - .:/var/www/html
+#    environment:
+#      APP_ENV: local
+#      CONTAINER_ROLE: scheduler
+#      CACHE_DRIVER: redis
+#      QUEUE_DRIVER: redis
+#      REDIS_HOST: host.docker.internal
+#    networks:
+#      - app_network
 
   # Adminer
   adminer:

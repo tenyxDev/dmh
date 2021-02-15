@@ -32,14 +32,14 @@ function secToStr($secs, $lang = 'en')
     $hourNames = ['h', 'h', 'h'];
     $minNames = ['m', 'm', 'm'];
     $sekNames = ['s', 's', 's'];
-    $postFix = ' left';
+    $preFix = 'Time left: ';
 
     if ($lang == 'ru') {
         $dayNames = ['день', 'дня', 'дней'];
         $hourNames = ['час', 'часа', 'часов'];
         $minNames = ['минута', 'минуты', 'минут'];
         $sekNames = ['секунда', 'секунды', 'секунд'];
-        $postFix = ' осталось';
+        $preFix = 'До запуска: ';
     }
 
     $days = floor($secs / 86400);
@@ -56,5 +56,5 @@ function secToStr($secs, $lang = 'en')
 
     $res .= num_word($secs, $sekNames);
 
-    return $res . $postFix;
+    return $preFix . $res;
 }

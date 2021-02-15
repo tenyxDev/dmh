@@ -1,30 +1,27 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-    <div class="container" style="padding: 0 10px">
-        <a class="navbar-brand" href="{{ route('ticket.docs') }}">
-            {{ config('app.name', 'DMH v0.0.1') }}
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="{{ __('Toggle navigation') }}"
-                style="padding: 0;">
-            <i class="fas fa-bars"></i>
-        </button>
+    <div>
+        <div style="width: 150px;padding: 0 20px;">
+            <a class="navbar-brand" href="{{ route('tickets.index') }}">
+                {{ config('app.name', 'DMH v0.0.1') }}
+            </a>
+            <span style="color: #a0a0a0;font-size: 10px;white-space: nowrap;">Current time: {{ date('Y-m-d H:i:s') }}</span>
+        </div>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link" href="{{ route('tardis') }}">{{ __('TARDIS') }}</a>--}}
-{{--                </li>|--}}
+                {{--                <li class="nav-item">--}}
+                {{--                    <a class="nav-link" href="{{ route('tardis') }}">{{ __('TARDIS') }}</a>--}}
+                {{--                </li>|
                 @if (Auth::check())
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('tickets.index') }}">{{ __('TICKET LIST') }}</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('tickets.index') }}">{{ __('TICKET LIST') }}</a>
+                    </li>
                 @endif
                 @if (Auth::check())
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('tickets.create') }}">{{ __('CREATE TICKET') }}</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('tickets.create') }}">{{ __('CREATE TICKET') }}</a>
+                    </li>
                 @endif
                 {{--                <li class="nav-item">--}}
                 {{--                    <a class="nav-link" href="{{ route('ticket.docs') }}">{{ __('TICKET DOCS') }}</a>--}}

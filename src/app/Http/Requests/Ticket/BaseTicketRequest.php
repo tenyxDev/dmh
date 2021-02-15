@@ -23,7 +23,7 @@ abstract class BaseTicketRequest extends FormRequest
             'ticket_name' => 'required|string|max:100',
             'ticket_type' => 'required|integer',
             'status'      => 'nullable|integer',
-            'timer'       => 'required|date|after:tomorrow',// . Carbon::now()->format('Y-m-d'),
+            'timer'       => 'required|date|after:now',
             'description' => 'nullable|string',
             'user_id'     => 'nullable|integer',
             'changed_by'  => 'nullable|integer',
@@ -40,7 +40,6 @@ abstract class BaseTicketRequest extends FormRequest
     public function all($keys = null)
     {
         $data = parent::all($keys);
-        $data['timer'] = implode(' ', $data['timer']);
 
 //        $type = $this->get('status');
 //        switch ($status) {

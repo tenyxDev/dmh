@@ -21,7 +21,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-        <link href="{{ asset('dist/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('dist/css/app.css') }}" rel="stylesheet">
 
         <!-- Styles -->
         <style>

@@ -13,6 +13,10 @@ class ExecuteTicket implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 5;
+
+    public $timeout = 20;
+
     protected $ticketId;
 
     /**
@@ -32,9 +36,10 @@ class ExecuteTicket implements ShouldQueue
      */
     public function handle()
     {
-        info('ExecuteTicket start with ticketId: ' . $this->ticketId);
+        info(__CLASS__ . '::' . __METHOD__ . ' start with ticketId: ' . $this->ticketId);
 
-        $ticket = Ticket::whereId($this->ticketId)->first();
+        $ticket = Ticket::findOrFail($this->ticketId);
+
         $ticket->update([
             'status' => Ticket::STATUS_PENDING
         ]);
@@ -43,7 +48,8 @@ class ExecuteTicket implements ShouldQueue
             $ticket->update([
                 'status' => Ticket::STATUS_COMPLETED
             ]);
-            info('ExecuteTicket result: ' . var_export([
+
+            info(__CLASS__ . '::' . __METHOD__ . ' result: ' . var_export([
                     'ticketId' => $this->ticketId,
                     'status'   => Ticket::STATUS_COMPLETED
                 ], true));
@@ -52,7 +58,7 @@ class ExecuteTicket implements ShouldQueue
                 'status' => Ticket::STATUS_FAILED
             ]);
 
-            info('ExecuteTicket result: ' . var_export([
+            info(__CLASS__ . '::' . __METHOD__ . ' result: ' . var_export([
                     'ticketId' => $this->ticketId,
                     'status'   => Ticket::STATUS_FAILED
                 ], true));
@@ -64,8 +70,8 @@ class ExecuteTicket implements ShouldQueue
      */
     protected function processTicketPoints(): bool
     {
-        info('processTicketPoints false');
+        info(__CLASS__ . '::' . __METHOD__ . ' return false');
 
-        return false;
+        return true;
     }
 }

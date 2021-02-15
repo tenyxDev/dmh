@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 
 class TicketController extends Controller
@@ -111,12 +112,11 @@ class TicketController extends Controller
 
     public function info()
     {
-
-//        dump(Config::all());
-//        $dir = 'C:\projects\dmh\src\storage\logs';
-//        if (is_dir($dir)) {
-//            dd(phpinfo());
-//        }
+        dump(Config::all());
+        $dir = 'C:\projects\dmh\src\storage\logs';
+        if (is_dir($dir)) {
+            dd(phpinfo());
+        }
     }
 
     /**
@@ -132,18 +132,15 @@ class TicketController extends Controller
         $ticketData['status'] = Ticket::STATUS_NEW;
         $ticketData['user_id'] = $userId;
         $ticketData['changed_by'] = $userId;
-        $ticketData['timer'] = implode(' ', $request->get('timer'));
 
         try {
-            $carbonTimer = Carbon::createFromFormat('Y-m-d H:i:s', implode(' ', $request->get('timer')));
+            $carbonTimer = Carbon::createFromFormat('Y/m/d H:i:s', $request->get('timer'));
         } catch (\Exception $e) {
-            Log::info('store ticket with Y-m-d H:i format of timer', ['timer' => $request->get('timer')]);
-            $carbonTimer = Carbon::createFromFormat('Y-m-d H:i', implode(' ', $request->get('timer')));
+            Log::info('store ticket with Y/m/d H:i format of timer', ['timer' => $request->get('timer')]);
+            dd('invalid date: ' . $request->get('timer'));
         }
         $ticketData['timer'] = $carbonTimer->format('U');
         $ticket = Ticket::create($ticketData);
-
-        SendReminderEmail::dispatch($ticket)->delay($carbonTimer);
 
         return redirect('/tickets');
     }
@@ -163,12 +160,18 @@ class TicketController extends Controller
         return $this->edit($ticketId); // TODO: show ticket points
     }
 
+    public function recycle(Request $request)
+    {
+        $ticket = Ticket::findOrFail($request->get('ticketId'));
+        $ticket->update(['status' => Ticket::STATUS_NEW]);
+
+        return redirect('/tickets');
+    }
+
     public function update(TicketRequest $request, $ticketId)
     {
         $ticketData = $request->except(['_method', '_token']);
-        $timer = $request->get('timer');
-        $ticketData['timer'] = Carbon::createFromFormat('Y-m-d H:i:s', $timer['date'] . ' ' . $timer['time'])
-            ->format('U');
+        $ticketData['timer'] = Carbon::createFromFormat('Y/m/d H:i:s', $request->get('timer'))->format('U');
 
         $ticket = Ticket::findOrFail($ticketId);
         $ticket->update($ticketData);

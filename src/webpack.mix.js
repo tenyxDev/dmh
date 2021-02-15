@@ -11,11 +11,8 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/dist/js')
-    .sass('resources/sass/app.scss', 'public/dist/css')
+mix.js('resources/assets/js/app.js', 'public/dist/js')
+    .sass('resources/assets/sass/app.scss', 'public/dist/css')
     .setPublicPath('public');
 
-// mix.js('resources/js/app.js', 'public/js').extract(['vue'])
-//     .sass('resources/sass/app.scss', 'public/css');
-
-console.log('laravel-mix done');
+console.log('"npx mix watch" done');

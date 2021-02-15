@@ -14,9 +14,7 @@
                         <div class="ticketActions"
                              data-id="{{ $ticket->id }}"
                              data-time-left="{{ $ticket->timer - $currentTime }}">
-                            @if(($ticket->timer - $currentTime) < 0)
-                                <i class="fas fa-exclamation-triangle"></i>
-                            @else
+                            @if(($ticket->timer - $currentTime) > 0)
                                 <form method="post" action="{{ route('ticket.activate')}}">
                                     @csrf
                                     <input type="hidden" name="ticketId" value="{{ $ticket->id }}">
@@ -73,13 +71,13 @@
                             </div>
                         </div>
                         <div class="ticketActions">
-                            <form method="post" action="{{ route('dispatch.ticket')}}">
-                                @csrf
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fas fa-stop hidden-sm-up"></i>
-                                    <span class="d-none d-sm-inline">DISPATCH</span>
-                                </button>
-                            </form>
+{{--                            <form method="post" action="{{ route('dispatch.ticket')}}">--}}
+{{--                                @csrf--}}
+{{--                                <button type="submit" class="btn btn-primary">--}}
+{{--                                    <i class="fas fa-play hidden-sm-up"></i>--}}
+{{--                                    <span class="d-none d-sm-inline">DISPATCH</span>--}}
+{{--                                </button>--}}
+{{--                            </form>--}}
                             <form method="post" action="{{ route('ticket.deactivate')}}">
                                 @csrf
                                 <input type="hidden" name="ticketId" value="{{ $ticket->id }}">
@@ -89,7 +87,7 @@
                                 </button>
                             </form>
                             <div class="clearfix"></div>
-                            <span>{{ \Carbon\Carbon::createFromFormat('U', $ticket->timer)->format('Y-m-d H:i:s') }}</span>
+                            <span>Execution time: {{ \Carbon\Carbon::createFromFormat('U', $ticket->timer)->format('Y-m-d H:i:s') }}</span>
                         </div>
                     </div>
                 @endforeach
@@ -146,7 +144,14 @@
                         </div>
                         <div class="ticketTime"
                              data-id="{{ $ticket->id }}">
-                            <input type="button" class="btn btn-danger failed" value="RETRY">
+                            <form method="post" action="{{ route('ticket.recycle')}}">
+                                @csrf
+                                <input type="hidden" name="ticketId" value="{{ $ticket->id }}">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-recycle hidden-sm-up"></i>
+                                    <span class="d-none d-sm-inline">RETRY</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 @endforeach
@@ -160,6 +165,7 @@
          && empty($failedTicketList)
         )
             <h1>WELCOME TO DEAD MEN'S HAND</h1>
+            <span>Create your first ticket below</span>
         @endif
 
     </div>
@@ -208,6 +214,12 @@
 
         function setTicketTimer(element) {
             let interval = setInterval(() => {
+                let reloadNeeded = $('.ticketWrapper').find('.reloadNeeded')
+
+                if(reloadNeeded.length > 0) {
+                    window.location.reload()
+                }
+
                 if (element.data('time-left') >= 0) {
                     element.text(secToStr(element.data('time-left')))
                 } else {
@@ -219,29 +231,11 @@
 
         function timerComplete(interval, element) {
             clearInterval(interval);
-            console.log(element);
             element.text('Completed')
+            element.closest('form').hide();
+            element.addClass('reloadNeeded')
             // callTack(element.data('id'))
         }
-
-        {{--function callTack(taskId) {--}}
-        {{--    console.log(taskId);--}}
-        {{--    $.ajax({--}}
-        {{--        url: $('.ticketWrapper').data('route'),--}}
-        {{--        type: 'POST',--}}
-        {{--        data: {"_token": "{{ csrf_token() }}", taskId},--}}
-        {{--        error: response => {--}}
-        {{--            console.log('error')--}}
-        {{--            console.log(response);--}}
-        {{--        },--}}
-        {{--        success: function (response) {--}}
-        {{--            console.log('success')--}}
-        {{--            console.log(response);--}}
-        {{--        },--}}
-        {{--        complete: function (response) {--}}
-        {{--        },--}}
-        {{--    });--}}
-        {{--}--}}
 
         function num_word(value, words, show = true) {
             let num;
@@ -278,14 +272,14 @@
             let hourNames = ['h', 'h', 'h'];
             let minNames = ['m', 'm', 'm'];
             let sekNames = ['s', 's', 's'];
-            let postFix = ' left';
+            let preFix = 'Time left: ';
 
             if(lang === 'ru') {
                 dayNames = ['день', 'дня', 'дней'];
                 hourNames = ['час', 'часа', 'часов'];
                 minNames = ['минута', 'минуты', 'минут'];
                 sekNames = ['секунда', 'секунды', 'секунд'];
-                postFix = ' осталось';
+                preFix = 'До запуска: ';
             }
 
             let days = Math.floor(secs / 86400);
@@ -302,9 +296,8 @@
 
             res = res + num_word(secs, sekNames);
 
-            return res + postFix;
+            return preFix + res;
         }
-
 
     </script>
 @endsection

@@ -31,6 +31,7 @@ Route::middleware([Authenticate::class])->group(function () {
     Route::get('/info', 'Ticket\TicketController@info')->name('ticket.info');
     Route::post('/ticket-complete', 'Ticket\TicketController@complete')->name('ticket.complete');
     Route::post('/ticket-activate', 'Ticket\TicketController@activate')->name('ticket.activate');
+    Route::post('/ticket-recycle', 'Ticket\TicketController@recycle')->name('ticket.recycle');
     Route::post('/ticket-deactivate', 'Ticket\TicketController@deactivate')->name('ticket.deactivate');
     Route::post('/ticket-destroy', 'Ticket\TicketController@destroy')->name('ticket.destroy');
     Route::resource('/tickets', 'Ticket\TicketController')->middleware('auth');
