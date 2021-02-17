@@ -52,20 +52,20 @@ services:
     networks:
       - app_network
 
-#  # Cache
-#  cache:
-#    container_name: dmh_cache
-#    build:
-#      context: ./docker/redis
-#    image: redis:4-alpine
-#    privileged: true
-#    restart: always
-#    ports:
-#      - 6379:6379
-#    volumes:
-#      - cache-data:/data
-#    networks:
-#      - app_network
+  # Cache
+  cache:
+    container_name: dmh_cache
+    build:
+      context: ./docker/redis
+    image: redis:4-alpine
+    privileged: true
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - cache-data:/data
+    networks:
+      - app_network
 
 #  scheduler:
 #    image: app

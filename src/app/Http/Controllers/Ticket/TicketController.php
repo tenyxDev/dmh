@@ -140,7 +140,7 @@ class TicketController extends Controller
             dd('invalid date: ' . $request->get('timer'));
         }
         $ticketData['timer'] = $carbonTimer->format('U');
-        $ticket = Ticket::create($ticketData);
+        Ticket::create($ticketData);
 
         return redirect('/tickets');
     }

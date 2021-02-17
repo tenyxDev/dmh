@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Factory;
 
 $factory->define(Ticket::class, function (Faker $faker) {
     return [
-        'ticket_type' => rand(0, 6),
+        'ticket_type' => rand(0, 1),
         'ticket_name' => $faker->name,
         'timer' => 1605830400,
         'changed_by' => 1,

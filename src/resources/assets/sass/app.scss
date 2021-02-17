@@ -21,7 +21,7 @@ $bg-height: 50px;
 #navbarSupportedContent {
     position: absolute;
     right: 15px;
-    top: 5px;
+    top: 0;
 }
 
 /* Animations */
@@ -251,7 +251,7 @@ input, button {
     background-color: $base-color-dark !important;
     border-bottom: 2px solid #0a0e0e;
     position: sticky;
-    padding: 0;
+    padding: 5px 0 10px 0;
     top: 0;
     z-index: 999;
 }
@@ -265,6 +265,7 @@ nav, .hud-interface {
 
 .navbar-light .navbar-brand, .navbar-light .navbar-nav .nav-link {
     color: #4dc0b5;
+    padding: 0;
 }
 
 .navbar-light .navbar-brand:hover, .navbar-light .navbar-nav .nav-link:hover {
@@ -295,6 +296,11 @@ nav, .hud-interface {
 
 .ticketWrapper {
     height: 100%;
+
+    .closedTaskList {
+        overflow-y: hidden !important;
+        height: 25px;
+    }
 
     .clearfix.hr {
         margin: 5px;
@@ -351,22 +357,27 @@ nav, .hud-interface {
 
         .task-container {
             position: relative;
+            margin-bottom: 20px;
 
             .box-label {
-                transition-property: width;
-                transition-duration: .5s;
-                transition-delay: 0s;
-                height: 11px;
-                width: 80px;
+                background-color: #ccc;
+                padding: 7px 10px;
+                text-align: center;
+                font-weight: bold;
+                text-transform: uppercase;
+                //transition-property: width;
+                //transition-duration: .5s;
+                //transition-delay: 0s;
+                height: 25px;
+                //width: 80px;
                 line-height: 10px;
-                border-radius: 0 115px 0 0;
+                border-radius: 115px 115px 0 0;
+                //border-radius: 0 115px 0 0;
                 overflow: hidden;
             }
 
             .box-label.new {
-                background: linear-gradient(-45deg, rgba(0, 0, 0, 0) 50%, #393400 0%, #393400 60%, rgba(0, 0, 0, 0) 60%);
-                background-size: 5em 5em;
-                background-color: #ffe500;
+                background: linear-gradient(-45deg, #ccc 10%, #1a5b00 20%, #1fd300 90%, #ccc 90%);
                 color: #333;
             }
 
@@ -380,23 +391,23 @@ nav, .hud-interface {
             }
 
             .box-label.pending {
-                //background: #00C3C3;
+                background: #98dada;
                 color: #444;
             }
 
             .box-label.completed {
-                background: #00ff7e;
+                background: #2daf71;
                 color: #444;
             }
 
             .box-label.failed {
-                background: #a90a5b;
+                background: #a3507a;
                 color: #eaeaea;
             }
         }
 
-        .task-container:hover .box-label {
-            width: 100%;
+        .task-container .box-label:hover {
+            color: #fff;
         }
     }
 

@@ -1,10 +1,10 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div>
         <div style="width: 150px;padding: 0 20px;">
-            <a class="navbar-brand" href="{{ route('tickets.index') }}">
+            <a class="navbar-brand" href="{{ route('tickets.index') }}" title="{{ date('Y-m-d H:i:s') }}">
+                <img width="30px" src="storage/android-chrome-192x192.png" alt="logo" />
                 {{ config('app.name', 'DMH v0.0.1') }}
             </a>
-            <span style="color: #a0a0a0;font-size: 10px;white-space: nowrap;">Current time: {{ date('Y-m-d H:i:s') }}</span>
         </div>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -28,8 +28,6 @@
                 {{--                </li>--}}
                 {{--                |--}}
             </ul>
-
-            <div class="clearfix hr"></div>
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">

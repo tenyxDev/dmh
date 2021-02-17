@@ -196,6 +196,9 @@
                         setTicketTimer(element)
                     })
                 })
+                .on('click', '.box-label', function () {
+                    $(this).closest('.task-container').toggleClass('closedTaskList')
+                })
                 .on('click', '.ticket', function () {
                     $(this).closest('.ticketWrapper').find('.ticket').removeClass('hovered')
                     $(this).addClass('hovered')
@@ -282,7 +285,10 @@
                 preFix = 'До запуска: ';
             }
 
-            let days = Math.floor(secs / 86400);
+            let time = window.performance.timing;
+            let loadingTime = Math.ceil(((time.responseStart - time.requestStart) / 1000))
+
+            let days = Math.floor((secs - loadingTime) / 86400);
             secs = secs % 86400;
             res = res + num_word(days, dayNames) + ', ';
 
